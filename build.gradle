@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.github.kalilina'
+version = '1.0-SNAPSHOT'
+
+apply from: 'script.gradle'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    springVersion = '6.2.14'
+    lombokVersion = '1.18.42'
+}
+
+wrapper {
+    gradleVersion = '8.13'
+}
+
+dependencies {
+    // Spring Core
+    implementation "org.springframework:spring-core:${springVersion}"
+
+    // Spring Context
+    implementation "org.springframework:spring-context:${springVersion}"
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+    testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
+    testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+    // JUnit
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

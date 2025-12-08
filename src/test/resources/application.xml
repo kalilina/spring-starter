@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <!-- connection a property file -->
+<!--    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">-->
+<!--        <property name="location" value="classpath:application.properties"/>-->
+<!--    </bean>-->
+
+    <context:property-placeholder location="classpath:application.properties"/>
+
+    <!-- UserRepository bean -->
+    <bean id="repo1" name="r1" class="com.github.kalilina.database.repository.UserRepository">
+        <constructor-arg name="username" value="${db.username}"/>
+        <constructor-arg name="poolSize" value="${db.pool.size}"/>
+        <constructor-arg name="args">
+            <list>
+                <ref bean="drova"/>
+                <value>22</value>
+                <value>333</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="properties">
+            <map>
+                <entry key="kayce" value="mod"/>
+                <entry key="drovishka" value-ref="drova"/>
+                <entry key="size" value="4"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="repo2" name="r2" class="com.github.kalilina.database.repository.UserRepository">
+        <property name="username" value="createdUsingSetter"/>
+        <property name="properties">
+            <map>
+                <entry key="I love" value="setters"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="drova" class="java.lang.String">
+        <constructor-arg value="PostgresBrevno"/>
+    </bean>
+
+    <!-- UserDto bean -->
+    <bean name="userDto1" id="udto1" class="com.github.kalilina.dto.UserDto" scope="prototype">
+        <constructor-arg name="id" value="1"/>
+        <constructor-arg name="name" value="named dto"/>
+    </bean>
+
+    <!-- UserMapper bean -->
+    <bean name="userMapper1" id="um1" class="com.github.kalilina.mapper.UserMapper">
+        <constructor-arg name="userDto" ref="udto1"/>
+    </bean>
+
+    <!-- UserService bean -->
+    <bean name="userService1" id="us1" class="com.github.kalilina.service.UserService">
+        <constructor-arg name="userMapper" ref="um1"/>
+        <constructor-arg name="userRepository" ref="r1"/>
+    </bean>
+</beans>
