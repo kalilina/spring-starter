@@ -27,6 +27,12 @@ dependencies {
     // Spring Context
     implementation "org.springframework:spring-context:${springVersion}"
 
+    // Hibernate core
+    implementation 'org.hibernate.orm:hibernate-core:6.6.35.Final'
+
+    // PostgreSQL
+    implementation 'org.postgresql:postgresql:42.7.8'
+
     // Lombok
     compileOnly("org.projectlombok:lombok:${lombokVersion}")
     annotationProcessor("org.projectlombok:lombok:${lombokVersion}")

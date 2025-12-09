@@ -2,6 +2,9 @@ package com.github.kalilina.ioc;
 
 import com.github.kalilina.database.repository.UserRepository;
 import com.github.kalilina.service.UserService;
+import com.github.kalilina.utils.HibernateUtil;
+import lombok.Cleanup;
+import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -19,5 +22,6 @@ public class UserServiceTest {
 
         var userService = context.getBean("us1", UserService.class);
         System.out.println(userService);
+        context.close(); // trigger destroy method
     }
 }

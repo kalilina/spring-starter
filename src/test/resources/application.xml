@@ -13,8 +13,12 @@
 
     <context:property-placeholder location="classpath:application.properties"/>
 
+    <bean name="hibernateUtil" id="hu" class="com.github.kalilina.utils.HibernateUtil" factory-method="get"/>
+
     <!-- UserRepository bean -->
-    <bean id="repo1" name="r1" class="com.github.kalilina.database.repository.UserRepository">
+    <!-- created using a constructor -->
+    <bean id="repo1" name="r1" class="com.github.kalilina.database.repository.UserRepository"
+          init-method="init" destroy-method="destroy">
         <constructor-arg name="username" value="${db.username}"/>
         <constructor-arg name="poolSize" value="${db.pool.size}"/>
         <constructor-arg name="args">
@@ -31,8 +35,10 @@
                 <entry key="size" value="4"/>
             </map>
         </constructor-arg>
+        <constructor-arg name="sessionFactory" ref="hu"/>
     </bean>
 
+    <!-- created using a setters -->
     <bean id="repo2" name="r2" class="com.github.kalilina.database.repository.UserRepository">
         <property name="username" value="createdUsingSetter"/>
         <property name="properties">
@@ -42,6 +48,7 @@
         </property>
     </bean>
 
+    <!-- String bean -->
     <bean name="drova" class="java.lang.String">
         <constructor-arg value="PostgresBrevno"/>
     </bean>
@@ -62,4 +69,26 @@
         <constructor-arg name="userMapper" ref="um1"/>
         <constructor-arg name="userRepository" ref="r1"/>
     </bean>
+
+    <!-- ================================= -->
+    <!-- HOMEWOKR -->
+    <bean id="cdto1" class="com.github.kalilina.dto.CompanyDto" scope="prototype">
+        <constructor-arg name="id" value="22"/>
+        <constructor-arg name="name" value="Shaomi"/>
+    </bean>
+
+    <bean id="cm1" class="com.github.kalilina.mapper.CompanyMapper">
+        <property name="companyDto" ref="cdto1"/>
+    </bean>
+
+    <bean id="cr1" class="com.github.kalilina.database.repository.CompanyRepository"
+          init-method="init" destroy-method="destroy">
+        <property name="sessionFactory" ref="hu"/>
+    </bean>
+
+    <bean id="cs1" class="com.github.kalilina.service.CompanyService">
+        <constructor-arg name="companyMapper" ref="cm1"/>
+        <constructor-arg name="companyRepository" ref="cr1"/>
+    </bean>
+    <!-- ================================= -->
 </beans>
