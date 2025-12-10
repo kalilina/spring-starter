@@ -1,9 +1,11 @@
-package com.github.kalilina.mapper;
+package com.github.kalilina.spring.mapper;
 
-import com.github.kalilina.dto.UserDto;
+import com.github.kalilina.spring.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 @ToString
 public class UserMapper {

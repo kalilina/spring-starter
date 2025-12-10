@@ -34,6 +34,9 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
     testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
+    // jakarta annotations api (to create bean using annotations)
+    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+
     // JUnit
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
