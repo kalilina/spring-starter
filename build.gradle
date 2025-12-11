@@ -13,7 +13,9 @@ repositories {
 
 ext {
     springVersion = '6.2.14'
+    mapstructVersion = '1.6.3'
     lombokVersion = '1.18.42'
+    lombokMapstructBindingVersion = '0.2.0'
 }
 
 wrapper {
@@ -27,6 +29,9 @@ dependencies {
     // Spring Context
     implementation "org.springframework:spring-context:${springVersion}"
 
+    // jakarta annotations api (to create bean using annotations)
+    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+
     // Lombok
     compileOnly("org.projectlombok:lombok:${lombokVersion}")
     annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
@@ -34,8 +39,14 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
     testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
-    // jakarta annotations api (to create bean using annotations)
-    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    // Mapstruct
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+//    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    // Mapstruct with lombok
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 
     // JUnit
     testImplementation platform('org.junit:junit-bom:5.10.0')
