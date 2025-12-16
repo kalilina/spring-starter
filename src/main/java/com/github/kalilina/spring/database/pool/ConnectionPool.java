@@ -1,13 +1,16 @@
 package com.github.kalilina.spring.database.pool;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Setter
 @ToString
 @Component
+@Slf4j
 public class ConnectionPool {
 
     private String url;
@@ -23,5 +26,10 @@ public class ConnectionPool {
         this.username = username;
         this.password = password;
         this.poolSize = poolSize;
+    }
+
+    @PostConstruct
+    public void init() {
+        log.info("ConnectionPool initialized with values: {}", this.toString());
     }
 }

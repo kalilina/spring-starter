@@ -1,0 +1,25 @@
+db:
+  driver: "org.postgresql.Driver"
+  url: "postgres:5432"
+  username: "postgres"
+  password: "postgres"
+  pool:
+    size: 10
+    timeout: 20
+  pools:
+    - size: 10
+      timeout: 20
+    - size: 15
+      timeout: 30
+  properties:
+    key: "value"
+    boy: "next door"
+    randNum: 543
+
+logging:
+  level:
+    root: WARN
+    com.github.kalilina.spring.database: INFO
+  file:
+    name: ./logs/app.log
+#    path: ./logs

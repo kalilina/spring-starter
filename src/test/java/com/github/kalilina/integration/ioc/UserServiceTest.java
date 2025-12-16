@@ -1,4 +1,4 @@
-package com.github.kalilina.ioc;
+package com.github.kalilina.integration.ioc;
 
 import com.github.kalilina.spring.config.ApplicationConfiguration;
 import com.github.kalilina.spring.database.repository.UserRepository;
@@ -9,11 +9,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class UserServiceTest {
 
-    private static final String SPRING_XML_CONFIG_PATH = "classpath:application.xml";
-
     @Test
     public void dependencyInjectionInUserService() {
-//        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(SPRING_XML_CONFIG_PATH);
         var context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
         var userRepository1 = context.getBean(UserRepository.class);
         System.out.println(userRepository1);

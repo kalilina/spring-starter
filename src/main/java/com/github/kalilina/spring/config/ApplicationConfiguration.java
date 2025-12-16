@@ -2,14 +2,13 @@ package com.github.kalilina.spring.config;
 
 import com.github.kalilina.spring.database.pool.ConnectionPool;
 import com.github.kalilina.spring.database.repository.UserRepository;
-import com.github.kalilina.web.config.WebConfiguration;
 import org.springframework.context.annotation.*;
 
-@Import(WebConfiguration.class) // add file from directory that is not scanned
-@ImportResource("classpath:application.xml")
+//@Import(WebConfiguration.class) // add file from directory that is not scanned
+//@ImportResource("classpath:application.xml")
 @Configuration
-@ComponentScan(value = "com.github.kalilina.spring")
-@PropertySource("classpath:application.properties")
+//@ComponentScan(value = "com.github.kalilina.spring")
+//@PropertySource("classpath:application.properties")
 public class ApplicationConfiguration {
 
     @Bean(name = "connectionPool1")

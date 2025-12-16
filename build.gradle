@@ -1,5 +1,12 @@
 plugins {
     id 'java'
+
+    // Spring Boot
+    id 'org.springframework.boot' version '3.5.8'
+    id 'io.spring.dependency-management' version '1.1.7'
+
+    // Lombok
+    id("io.freefair.lombok") version "9.1.0"
 }
 
 group = 'com.github.kalilina'
@@ -7,60 +14,57 @@ version = '1.0-SNAPSHOT'
 
 apply from: 'script.gradle'
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 ext {
-    springVersion = '6.2.14'
+    springBootVersion = '3.5.8'
     mapstructVersion = '1.6.3'
-    lombokVersion = '1.18.42'
     lombokMapstructBindingVersion = '0.2.0'
 }
 
 wrapper {
-    gradleVersion = '8.13'
+    gradleVersion = '8.14.3'
 }
 
 dependencies {
-    // Spring Core
-    implementation "org.springframework:spring-core:${springVersion}"
+    // Spring Boot Starter (includes core, context, jakarta annotations api)
+    implementation ("org.springframework.boot:spring-boot-starter:${springBootVersion}") {
+//        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
 
-    // Spring Context
-    implementation "org.springframework:spring-context:${springVersion}"
+    // Log4j2
+//    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
-    // jakarta annotations api (to create bean using annotations)
-    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
-
-    // Lombok
-    compileOnly("org.projectlombok:lombok:${lombokVersion}")
-    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
-
-    testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
-    testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    // PostgreSQL
+    implementation 'org.postgresql:postgresql'
 
     // Mapstruct
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
-//    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-
     // Mapstruct with lombok
     annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 
     // JUnit
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation('org.springframework.boot:spring-boot-starter-test')
 }
 
-testing {
-    suites {
-        test {
-            useJUnitJupiter()
-        }
-    }
-}
+//testing {
+//    suites {
+//        test {
+//            useJUnitJupiter()
+//        }
+//    }
+//}
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }

@@ -1,4 +1,4 @@
-package com.github.kalilina.listener;
+package com.github.kalilina.integration.listener;
 
 import com.github.kalilina.spring.config.ApplicationConfiguration;
 import com.github.kalilina.spring.service.CompanyService;
