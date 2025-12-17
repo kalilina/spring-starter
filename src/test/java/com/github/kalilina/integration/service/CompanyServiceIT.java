@@ -30,6 +30,5 @@ public class CompanyServiceIT {
 
         assertTrue(maybeCompanyDto.isPresent());
         assertEquals(COMPANY_ID, maybeCompanyDto.get().id());
-
     }
 }

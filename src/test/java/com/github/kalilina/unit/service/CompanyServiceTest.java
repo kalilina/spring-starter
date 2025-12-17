@@ -6,12 +6,10 @@ import com.github.kalilina.spring.dto.CompanyReadDto;
 import com.github.kalilina.spring.listener.EntityEvent;
 import com.github.kalilina.spring.mapper.CompanyMapper;
 import com.github.kalilina.spring.service.CompanyService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -26,13 +24,13 @@ public class CompanyServiceTest {
     private static final Integer COMPANY_ID = 1;
 
     @Mock
-    CompanyRepository companyRepository;
+    private CompanyRepository companyRepository;
     @Mock
-    CompanyMapper companyMapper;
+    private CompanyMapper companyMapper;
     @Mock
-    ApplicationEventPublisher applicationEventPublisher;
+    private ApplicationEventPublisher applicationEventPublisher;
     @InjectMocks
-    CompanyService companyService;
+    private CompanyService companyService;
 
     @Test
     public void findById() {
