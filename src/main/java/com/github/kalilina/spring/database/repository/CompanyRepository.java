@@ -10,6 +10,6 @@ public class CompanyRepository {
 
     public Optional<Company> findById(int id) {
         System.out.println("CompanyRepository: findById method was called with argument: " + id);
-        return Optional.of(new Company(id, null));
+        return Optional.of(Company.builder().id(id).build());
     }
 }

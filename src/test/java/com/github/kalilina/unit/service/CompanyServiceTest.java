@@ -35,7 +35,10 @@ public class CompanyServiceTest {
     @Test
     public void findById() {
         // Arrange
-        Company companyEntity = new Company(COMPANY_ID, "Sasung");
+        Company companyEntity = Company.builder()
+                .id(COMPANY_ID)
+                .name("Sasung")
+                .build();
         CompanyReadDto companyDto = new CompanyReadDto(COMPANY_ID, "Sasung");
 
         when(companyRepository.findById(COMPANY_ID))
