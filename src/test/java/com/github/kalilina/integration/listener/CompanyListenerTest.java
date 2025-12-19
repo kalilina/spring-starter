@@ -10,7 +10,6 @@ import org.springframework.test.context.TestConstructor;
 
 @IT
 @RequiredArgsConstructor
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 public class CompanyListenerTest {
 
     private final CompanyService companyService;

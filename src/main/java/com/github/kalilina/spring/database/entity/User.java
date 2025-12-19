@@ -10,8 +10,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"id", "company", "payments"})
-@ToString(exclude = {"company", "payments"})
+@EqualsAndHashCode(exclude = {"id", "company", "payments", "usersChats"})
+@ToString(exclude = {"company", "payments", "usersChats"})
 @Builder
 @Entity
 @Table(name = "users")
@@ -35,7 +35,7 @@ public class User implements BaseEntity<Long> {
     private Company company;
 
     @Builder.Default
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "receiver")
     List<Payment> payments = new ArrayList<>();
 
     @Builder.Default

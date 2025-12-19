@@ -1,34 +1,53 @@
 package com.github.kalilina.spring.database.repository;
 
-import com.github.kalilina.spring.bpp.InjectBean;
-import com.github.kalilina.spring.database.pool.ConnectionPool;
-import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
+import com.github.kalilina.spring.database.entity.Role;
+import com.github.kalilina.spring.database.entity.User;
+import com.github.kalilina.spring.dto.IUniqueInfoDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-@ToString
-public class UserRepository {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-//    @InjectBean // own Autowired
-//    @Autowired
-//    @Qualifier("cp1")
-    private ConnectionPool connectionPool1;
-//    @Value("${db.driver}")
-    private String driverName;
-//    @Autowired
-    List<ConnectionPool> connectionPools;
+    @Query("""
+        select u from User u
+        where u.personalInfo.firstname ilike %:firstname%
+          and u.personalInfo.lastname ilike %:lastname%
+        """)
+    List<User> findAllByPersonalInfo_FirstnameContainingAndPersonalInfo_LastnameContaining(
+            String firstname, String lastname);
 
-    public UserRepository(ConnectionPool connectionPool1,
-                          @Value("${db.driver}") String driverName,
-                          List<ConnectionPool> connectionPools) {
-        this.connectionPool1 = connectionPool1;
-        this.driverName = driverName;
-        this.connectionPools = connectionPools;
-    }
+    @Query(value = "SELECT u.* FROM users u WHERE u.username = :username",
+            nativeQuery = true)
+    Optional<User> findByUsername(String username);
+
+    @Modifying(clearAutomatically = true)
+    @Query("""
+        update User u set u.role = :role
+        where u.id in (:ids)
+        """)
+    int updateRole(Role role, Long... ids);
+
+    @Query(value = """
+        SELECT u.id, u.username FROM users u
+        WHERE u.company_id = :companyId
+        """,
+    nativeQuery = true)
+    List<IUniqueInfoDto> findAllByCompanyId(Integer companyId);
+//    <T> List<T> findAllByCompanyId(Integer companyId, Class<T> clazz);
+
+    List<User> findFirst3ByCompanyIdIsNotNullOrderByIdDesc();
+
+    // dynamic sort
+    List<User> findFirst3By(Sort sort);
+
+    Page<User> findAllBy(Pageable pageable);
 }
 

@@ -20,10 +20,4 @@ public class ApplicationConfiguration {
     public ConnectionPool connectionPool2() {
         return new ConnectionPool("---", "mysql", "123", 100);
     }
-
-    @Bean
-    @Profile("web|test")
-    public UserRepository userRepository() {
-        return new UserRepository(connectionPool2(), "derevo", null);
-    }
 }

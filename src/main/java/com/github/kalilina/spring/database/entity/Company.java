@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NamedQuery(name = "Company.findByName", // +IgnoreCase
+            query = "SELECT c FROM Company c WHERE lower(c.name) = lower(:name2)")
 @Getter
 @Setter
 @NoArgsConstructor
