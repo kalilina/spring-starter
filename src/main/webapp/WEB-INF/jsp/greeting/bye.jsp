@@ -5,6 +5,6 @@
     <title>Bye</title>
 </head>
 <body>
-<h1>bb from jsp</h1>
+<h1>bb ${requestScope.user.username()}</h1>
 </body>
 </html>
