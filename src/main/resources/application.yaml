@@ -35,3 +35,8 @@ spring:
       show_sql: true
       format_sql: true
       hbm2ddl.auto: validate
+
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
