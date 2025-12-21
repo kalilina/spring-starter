@@ -35,6 +35,6 @@ public class Company implements BaseEntity<Integer> {
     private Map<String, String> locales = new HashMap<>();
 
     @Builder.Default
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "company")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
     private List<User> users = new ArrayList<>();
 }
