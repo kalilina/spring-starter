@@ -22,13 +22,13 @@ public class UserService {
     private final UserMapper userMapper;
 
     public List<UserReadDto> findAll() {
-        return userRepository.findAll().stream()
+        return userRepository.findAllWithCompany().stream()
                 .map(userMapper::toReadDto)
                 .toList();
     }
 
     public Optional<UserReadDto> findById(Long id) {
-        return userRepository.findById(id)
+        return userRepository.findByIdWithCompany(id)
                 .map(userMapper::toReadDto);
     }
 

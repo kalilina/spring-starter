@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -49,5 +50,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findFirst3By(Sort sort);
 
     Page<User> findAllBy(Pageable pageable);
+
+    @EntityGraph(attributePaths = "company")
+    @Query("select u from User u")
+    List<User> findAllWithCompany();
+
+    @EntityGraph(attributePaths = "company")
+    @Query("select u from User u where u.id = :id")
+    Optional<User> findByIdWithCompany(Long id);
 }
 
