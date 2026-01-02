@@ -47,8 +47,8 @@ dependencies {
     // Spring Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    // (web) Jasper for tomcat
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    // (web) Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     // PostgreSQL
     implementation 'org.postgresql:postgresql'
