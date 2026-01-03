@@ -1,6 +1,7 @@
 package com.github.kalilina.spring.http.controller;
 
 import com.github.kalilina.spring.database.entity.Role;
+import com.github.kalilina.spring.dto.PersonalInfoDto;
 import com.github.kalilina.spring.dto.UserCreateEditDto;
 import com.github.kalilina.spring.dto.UserReadDto;
 import com.github.kalilina.spring.service.CompanyService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/users")
@@ -19,6 +21,17 @@ public class UserController {
 
     private final UserService userService;
     private final CompanyService companyService;
+
+    @GetMapping("/registration")
+    public String registration(Model model) {
+        var userCreateDto = UserCreateEditDto.builder()
+                .personalInfo(PersonalInfoDto.builder().build())
+                .build();
+        model.addAttribute("user", userCreateDto);
+        model.addAttribute("roles", Role.values());
+        model.addAttribute("companies", companyService.findAll());
+        return "user/registration";
+    }
 
     @GetMapping
     public String findAll(Model model) {
@@ -42,7 +55,12 @@ public class UserController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute UserCreateEditDto userCreateDto) {
+    public String create(@ModelAttribute UserCreateEditDto userCreateDto,
+                         RedirectAttributes redirectAttributes) {
+        if (true) { // заглушка. Тут будет проверка валидатором
+            redirectAttributes.addFlashAttribute("user", userCreateDto);
+            return "redirect:/users/registration";
+        }
         UserReadDto dto = userService.save(userCreateDto);
         return "redirect:/users/" + dto.id();
     }
