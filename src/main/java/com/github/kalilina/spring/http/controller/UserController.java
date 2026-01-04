@@ -3,6 +3,7 @@ package com.github.kalilina.spring.http.controller;
 import com.github.kalilina.spring.database.entity.Role;
 import com.github.kalilina.spring.dto.PersonalInfoDto;
 import com.github.kalilina.spring.dto.UserCreateEditDto;
+import com.github.kalilina.spring.dto.UserFilter;
 import com.github.kalilina.spring.dto.UserReadDto;
 import com.github.kalilina.spring.service.CompanyService;
 import com.github.kalilina.spring.service.UserService;
@@ -34,10 +35,11 @@ public class UserController {
     }
 
     @GetMapping
-    public String findAll(Model model) {
+    public String findAll(Model model, UserFilter filter) {
 //        [refactor] findAll() with a filter is more commonly used
-//        model.addAttribute("users", userService.findAll(filter));
-        model.addAttribute("users", userService.findAll());
+        System.out.println("UserFilter: " + filter);
+        model.addAttribute("users", userService.findAll(filter));
+//        model.addAttribute("users", userService.findAll());
         return "user/users";
     }
 

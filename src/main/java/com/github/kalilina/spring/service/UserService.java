@@ -3,6 +3,7 @@ package com.github.kalilina.spring.service;
 import com.github.kalilina.spring.database.repository.CompanyRepository;
 import com.github.kalilina.spring.database.repository.UserRepository;
 import com.github.kalilina.spring.dto.UserCreateEditDto;
+import com.github.kalilina.spring.dto.UserFilter;
 import com.github.kalilina.spring.dto.UserReadDto;
 import com.github.kalilina.spring.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final UserMapper userMapper;
+
+    public List<UserReadDto> findAll(UserFilter filter) {
+        return userRepository.findAllByFilterWithCompany(filter).stream() // WithCompany()?
+                .map(userMapper::toReadDto)
+                .toList();
+    }
 
     public List<UserReadDto> findAll() {
         return userRepository.findAllWithCompany().stream()

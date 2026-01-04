@@ -5,6 +5,21 @@
     <title>users</title>
 </head>
 <body>
+<b>User filter</b><br>
+<form action="/users">
+    <label for="firstname">Firstname:
+        <input id="firstname" type="text" name="personalInfo.firstname">
+    </label><br>
+    <label for="lastname">Lastname:
+        <input id="lastname" type="text" name="personalInfo.lastname">
+    </label><br>
+    <label for="birthDate">Birthdate:
+        <input id="birthDate" type="date" name="personalInfo.birthDate.birthday">
+    </label><br>
+    <button type="submit">Filter</button>
+</form><br>
+
+<b>List of users</b><br>
 <div th:each="user: ${users}">
     <a th:href="@{'/users/' + ${user.id()}}"
        th:text="|${user.id()}. ${user.username()}|">
