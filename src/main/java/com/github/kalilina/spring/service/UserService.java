@@ -23,7 +23,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     public List<UserReadDto> findAll(UserFilter filter) {
-        return userRepository.findAllByFilterWithCompany(filter).stream() // WithCompany()?
+        return userRepository.findAllByFilter(filter).stream()
                 .map(userMapper::toReadDto)
                 .toList();
     }

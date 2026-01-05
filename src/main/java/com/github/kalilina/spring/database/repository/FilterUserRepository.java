@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface FilterUserRepository {
 
-    List<User> findAllByFilterWithCompany(UserFilter filter);
+    List<User> findAllByFilter(UserFilter filter);
 }

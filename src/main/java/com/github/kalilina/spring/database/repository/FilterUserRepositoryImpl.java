@@ -17,7 +17,7 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<User> findAllByFilterWithCompany(UserFilter filter) {
+    public List<User> findAllByFilter(UserFilter filter) {
         var cb = entityManager.getCriteriaBuilder();
         var criteria = cb.createQuery(User.class);
 
@@ -38,8 +38,6 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
                         filter.personalInfo().birthDate().birthday()));
             }
         }
-
-        user.fetch("company", JoinType.LEFT);
 
         criteria.where(predicates.toArray(Predicate[]::new));
 
