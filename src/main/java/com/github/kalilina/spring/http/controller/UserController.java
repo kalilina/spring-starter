@@ -1,13 +1,12 @@
 package com.github.kalilina.spring.http.controller;
 
 import com.github.kalilina.spring.database.entity.Role;
-import com.github.kalilina.spring.dto.PersonalInfoDto;
-import com.github.kalilina.spring.dto.UserCreateEditDto;
-import com.github.kalilina.spring.dto.UserFilter;
-import com.github.kalilina.spring.dto.UserReadDto;
+import com.github.kalilina.spring.dto.*;
 import com.github.kalilina.spring.service.CompanyService;
 import com.github.kalilina.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,11 +34,9 @@ public class UserController {
     }
 
     @GetMapping
-    public String findAll(Model model, UserFilter filter) {
-//        [refactor] findAll() with a filter is more commonly used
-        System.out.println("UserFilter: " + filter);
-        model.addAttribute("users", userService.findAll(filter));
-//        model.addAttribute("users", userService.findAll());
+    public String findAll(Model model, UserFilter filter, Pageable pageable) {
+        Page<UserReadDto> page = userService.findAll(filter, pageable);
+        model.addAttribute("users", PageResponse.of(page));
         return "user/users";
     }
 

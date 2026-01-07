@@ -5,8 +5,8 @@
     <title>users</title>
 </head>
 <body>
-<b>User filter</b><br>
 <form action="/users">
+    <b>User filter</b><br>
     <label for="firstname">Firstname:
         <input id="firstname" type="text" name="personalInfo.firstname">
     </label><br>
@@ -16,11 +16,20 @@
     <label for="birthDate">Birthdate:
         <input id="birthDate" type="date" name="personalInfo.birthDate.birthday">
     </label><br>
-    <button type="submit">Filter</button>
+
+    <br><b>Pagination</b><br>
+    <label for="page">Page:
+        <input id="page" type="number" name="page" th:value="${users.getMetadata().getPage()}">
+    </label><br>
+    <label for="size">Size:
+        <input id="size" type="number" name="size" th:value="${users.getMetadata().getSize()}">
+    </label><br>
+
+    <br><button type="submit">Filter</button>
 </form><br>
 
 <b>List of users</b><br>
-<div th:each="user: ${users}">
+<div th:each="user: ${users.content}">
     <a th:href="@{'/users/' + ${user.id()}}"
        th:text="|${user.id()}. ${user.username()}|">
         User

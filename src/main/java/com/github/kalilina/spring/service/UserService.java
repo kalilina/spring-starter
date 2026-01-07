@@ -2,16 +2,21 @@ package com.github.kalilina.spring.service;
 
 import com.github.kalilina.spring.database.repository.CompanyRepository;
 import com.github.kalilina.spring.database.repository.UserRepository;
+import com.github.kalilina.spring.dto.QPredicate;
 import com.github.kalilina.spring.dto.UserCreateEditDto;
 import com.github.kalilina.spring.dto.UserFilter;
 import com.github.kalilina.spring.dto.UserReadDto;
 import com.github.kalilina.spring.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.github.kalilina.spring.database.entity.QUser.user;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +26,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final UserMapper userMapper;
+
+    public Page<UserReadDto> findAll(UserFilter filter, Pageable pageable) {
+        QPredicate qPredicate = QPredicate.builder();
+        if (filter.personalInfo() != null) {
+            qPredicate.add(filter.personalInfo().firstname(), user.personalInfo.firstname::containsIgnoreCase)
+                    .add(filter.personalInfo().lastname(), user.personalInfo.lastname::containsIgnoreCase);
+        }
+        var predicate = qPredicate.buildAnd();
+
+        return userRepository.findAll(predicate, pageable)
+                .map(userMapper::toReadDto);
+    }
 
     public List<UserReadDto> findAll(UserFilter filter) {
         return userRepository.findAllByFilter(filter).stream()
