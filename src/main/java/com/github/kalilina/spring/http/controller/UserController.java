@@ -113,4 +113,10 @@ public class UserController {
         }
         return "redirect:/users";
     }
+
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception exception) {
+        log.error("Failed to return response", exception);
+        return "error/error500";
+    }
 }
