@@ -1,5 +1,6 @@
 package com.github.kalilina.spring.http.controller;
 
+import com.github.kalilina.spring.database.entity.Birthday;
 import com.github.kalilina.spring.database.entity.Role;
 import com.github.kalilina.spring.dto.*;
 import com.github.kalilina.spring.service.CompanyService;
@@ -10,9 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/users")
@@ -54,12 +59,37 @@ public class UserController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute UserCreateEditDto userCreateDto,
+    public String create(@ModelAttribute @Validated UserCreateEditDto userCreateDto,
+                         BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
-        if (true) { // заглушка. Тут будет проверка валидатором
+        System.out.println(userCreateDto);
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", userCreateDto);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/users/registration";
         }
+
+        /*
+            из-за того, что Birthday record спринг не может создать компонент с пустыми полями и выбрасывает ошибку
+
+            по-хорошему нужно либо перелопатить dto (не использовать Birthday в нем), либо не использовать Birthday
+            вообще нигде.
+
+            но мне было лень это делать, поэтому создаем тот же dto, только с LocalDate.now()
+         */
+        if (userCreateDto.personalInfo() != null
+            && userCreateDto.personalInfo().birthDate() == null) {
+            userCreateDto = UserCreateEditDto.builder()
+                    .username(userCreateDto.username())
+                    .personalInfo(PersonalInfoDto.builder()
+                            .firstname(userCreateDto.personalInfo().firstname())
+                            .lastname(userCreateDto.personalInfo().lastname())
+                            .birthDate(new Birthday(LocalDate.now())).build())
+                    .role(userCreateDto.role())
+                    .companyId(userCreateDto.companyId())
+                    .build();
+        }
+
         UserReadDto dto = userService.save(userCreateDto);
         return "redirect:/users/" + dto.id();
     }
@@ -67,7 +97,7 @@ public class UserController {
     //    @PutMapping("/{id}")
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute UserCreateEditDto userEditDto) {
+                         @ModelAttribute @Validated UserCreateEditDto userEditDto) {
         return userService.update(id, userEditDto)
                 .map(it -> "redirect:/users/{id}")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

@@ -7,18 +7,14 @@
 <body>
 <form th:action="@{/users}" method="post" th:object="${user}">
     <label for="username">Username:
-        <input id="username" type="text" name="username" th:value="*{username}">
+        <input id="username" type="text" th:field="*{username}">
     </label><br>
 
     <label for="firstname">Firstname:
-        <input id="firstname" type="text" name="firstname" th:value="*{personalInfo.firstname}">
+        <input id="firstname" type="text" th:field="*{personalInfo.firstname}">
     </label><br>
     <label for="lastname">Lastname:
-        <input id="lastname" type="text" name="lastname" th:value="*{personalInfo.lastname}">
-    </label><br>
-
-    <label for="birthDate">BirthDate:
-        <input id="birthDate" type="date" name="birthDate">
+        <input id="lastname" type="text" th:field="*{personalInfo.lastname}">
     </label><br>
 
     <div th:each="role: ${roles}">
@@ -40,5 +36,11 @@
 
     <button type="submit">Register</button>
 </form>
+
+<div th:if="${errors}">
+    <p style="color: red" th:each="error: ${errors}">
+        <span th:text="|${error.field} ${error.defaultMessage}|">Error message</span>
+    </p>
+</div>
 </body>
 </html>
