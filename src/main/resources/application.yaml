@@ -41,3 +41,7 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
+
+app:
+  image:
+    bucket: /home/bob/IdeaProjects/spring-starter/images

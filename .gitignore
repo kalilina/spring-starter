@@ -1,3 +1,7 @@
+# images
+images/*
+!images/.gitkeep
+
 # logs
 logs/*
 !logs/.gitkeep
