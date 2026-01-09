@@ -51,6 +51,9 @@ dependencies {
     // (web) Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+    // Validation (jsr-303)
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     // PostgreSQL
     implementation 'org.postgresql:postgresql'
 
@@ -67,8 +70,8 @@ dependencies {
     annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
     annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 
-    // Validation (jsr-303)
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0'
 
     // JUnit
     implementation('org.springframework.boot:spring-boot-starter-test')
