@@ -1,7 +1,6 @@
 package com.github.kalilina.spring.http.rest;
 
 import com.github.kalilina.spring.database.entity.Birthday;
-import com.github.kalilina.spring.database.entity.Role;
 import com.github.kalilina.spring.dto.*;
 import com.github.kalilina.spring.service.CompanyService;
 import com.github.kalilina.spring.service.UserService;
@@ -10,17 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserRestController {
@@ -29,14 +24,12 @@ public class UserRestController {
     private final CompanyService companyService;
 
     @GetMapping
-    @ResponseBody
     public PageResponse<UserReadDto> findAll(UserFilter filter, Pageable pageable) {
         Page<UserReadDto> page = userService.findAll(filter, pageable);
         return PageResponse.of(page);
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     public UserReadDto findById(@PathVariable("id") Long id) {
         return userService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
