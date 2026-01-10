@@ -1,5 +1,6 @@
 package com.github.kalilina.spring.service;
 
+import com.github.kalilina.spring.database.entity.User;
 import com.github.kalilina.spring.database.repository.CompanyRepository;
 import com.github.kalilina.spring.database.repository.UserRepository;
 import com.github.kalilina.spring.dto.QPredicate;
@@ -8,10 +9,13 @@ import com.github.kalilina.spring.dto.UserFilter;
 import com.github.kalilina.spring.dto.UserReadDto;
 import com.github.kalilina.spring.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +30,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final UserMapper userMapper;
+    private final ImageService imageService;
 
     public Page<UserReadDto> findAll(UserFilter filter, Pageable pageable) {
         QPredicate qPredicate = QPredicate.builder();
@@ -59,7 +64,10 @@ public class UserService {
     @Transactional
     public UserReadDto save(UserCreateEditDto userCreateDto) {
         return Optional.ofNullable(userCreateDto)
-                .map(userDto -> userMapper.toEntity(userDto, companyRepository))
+                .map(userDto -> {
+                    uploadImage(userDto.image());
+                    return userMapper.toEntity(userDto, companyRepository);
+                })
                 .map(userRepository::save)
                 .map(userMapper::toReadDto)
                 .orElseThrow();
@@ -69,6 +77,7 @@ public class UserService {
     public Optional<UserReadDto> update(Long id, UserCreateEditDto userEditDto) {
         return userRepository.findById(id)
                 .map(userEntity -> {
+                    uploadImage(userEditDto.image());
                     userMapper.updateEntity(userEditDto, userEntity, companyRepository);
                     return userEntity;
                 })
@@ -85,5 +94,20 @@ public class UserService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    @SneakyThrows
+    public Optional<byte[]> findImage(Long id) {
+        return userRepository.findById(id)
+                .map(User::getImage)
+                .filter(StringUtils::hasText)
+                .flatMap(imageService::get);
+    }
+
+    @SneakyThrows
+    private void uploadImage(MultipartFile image) {
+        if (image != null && !image.isEmpty()) {
+            imageService.upload(image.getOriginalFilename(), image.getInputStream());
+        }
     }
 }

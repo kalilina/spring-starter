@@ -75,4 +75,10 @@ public class UserRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(value = "/{id}/image", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public byte[] findImage(@PathVariable Long id) {
+        return userService.findImage(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
 }

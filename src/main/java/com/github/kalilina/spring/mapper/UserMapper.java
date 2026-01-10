@@ -6,6 +6,7 @@ import com.github.kalilina.spring.database.repository.CompanyRepository;
 import com.github.kalilina.spring.dto.UserCreateEditDto;
 import com.github.kalilina.spring.dto.UserReadDto;
 import org.mapstruct.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Mapper(
         componentModel = MappingConstants.ComponentModel.SPRING,
@@ -16,11 +17,14 @@ public interface UserMapper {
 
     // create
     @Mapping(source = "companyId", target = "company", qualifiedByName = "mapCompany")
+    @Mapping(source = "image", target = "image", qualifiedByName = "mapImage")
     User toEntity(UserCreateEditDto userDto,
                   @Context CompanyRepository companyRepository);
 
     // update
     @Mapping(source = "companyId", target = "company", qualifiedByName = "mapCompany")
+    @Mapping(source = "image", target = "image", qualifiedByName = "mapImage",
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntity(UserCreateEditDto userDto, @MappingTarget User user,
                       @Context CompanyRepository companyRepository);
 
@@ -33,5 +37,12 @@ public interface UserMapper {
 
         return companyRepository.findById(companyId)
                 .orElseThrow();
+    }
+
+    @Named("mapImage")
+    default String mapImage(MultipartFile image) {
+        return image == null || image.isEmpty()
+                ? null
+                : image.getOriginalFilename();
     }
 }

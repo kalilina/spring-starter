@@ -27,6 +27,8 @@ public class User implements BaseEntity<Long> {
     @Embedded
     private PersonalInfo personalInfo;
 
+    private String image;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
