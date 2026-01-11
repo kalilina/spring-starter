@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS users
     lastname   VARCHAR(64),
     role       VARCHAR(32),
     company_id INT REFERENCES company (id) ON DELETE CASCADE,
-    image      VARCHAR(128)
+    image      VARCHAR(128),
+    password   VARCHAR(128) DEFAULT '{noop}123'
 );
 
 CREATE TABLE IF NOT EXISTS payment
