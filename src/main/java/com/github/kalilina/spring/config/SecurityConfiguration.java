@@ -2,11 +2,12 @@ package com.github.kalilina.spring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static com.github.kalilina.spring.database.entity.Role.*;
 
 @Configuration
 @EnableWebSecurity
@@ -16,6 +17,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/users/registration", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority(ADMIN.getAuthority())
+                        .requestMatchers("/users/{id}/delete").hasAnyAuthority(ADMIN.getAuthority(), OPERATOR.getAuthority())
                         .anyRequest().authenticated())
 //                .httpBasic(Customizer.withDefaults())
                 .formLogin(login -> login
