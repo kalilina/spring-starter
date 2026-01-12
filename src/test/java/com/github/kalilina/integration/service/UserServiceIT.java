@@ -12,6 +12,7 @@ import com.github.kalilina.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestConstructor;
 
 import java.time.LocalDate;
@@ -55,6 +56,7 @@ public class UserServiceIT {
                         .firstname("end")
                         .lastname("dead")
                         .build())
+                .image(new MockMultipartFile("test", new byte[0]))
                 .role(Role.USER)
                 .companyId(COMPANY_ID_1)
                 .build();

@@ -57,6 +57,9 @@ dependencies {
     // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    // Spring Security Test
+    implementation 'org.springframework.security:spring-security-test'
+
     // PostgreSQL
     implementation 'org.postgresql:postgresql'
 
