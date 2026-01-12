@@ -8,7 +8,7 @@
 <div th:insert="~{fragment :: header}"></div>
 
 
-<form action="/users">
+<form th:action="@{/users}">
     <b>User filter</b><br>
     <label for="firstname">Firstname:
         <input id="firstname" type="text" name="personalInfo.firstname">
