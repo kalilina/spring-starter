@@ -8,6 +8,7 @@
 <div style="color: red" th:if="${param.error}">
     Invalid username and password.
 </div>
+<div th:insert="~{fragment :: locale}"></div>
 
 <form th:action="@{/login}" method="post">
     <!-- csrf -->
@@ -15,10 +16,10 @@
 <!--           th:name="${_csrf.parameterName}"-->
 <!--           th:value="${_csrf.token}">-->
 
-    <label for="username">
+    <label for="username"><span th:text="#{login.username}">Username</span>
         <input id="username" type="text" name="username"/>
     </label><br>
-    <label for="password">
+    <label for="password"><span th:text="#{login.password}">Password</span>
         <input id="password" type="password" name="password"/>
     </label>
     <button type="submit">Login</button>
